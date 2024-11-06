@@ -1,0 +1,90 @@
+﻿@model StudioManagement.Data.Member
+
+@{
+    ViewData["Title"] = "Get";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-secondary bg-gradient py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Member Informations</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-4">
+        <div class="border p-3 mt-4">
+            <div class="mb-3 row p-1">
+                <label asp-for="Status" class="p-0"></label>
+                <input asp-for="Status" disabled class="form-control" />
+            </div>
+            <div class="mb-3 row p-1">
+                <label asp-for="MemberUUId" class="p-0"></label>
+                <input asp-for="MemberUUId" disabled class="form-control" />
+            </div>
+            <div class="mb-3 row p-1">
+                <label asp-for="UserName" class="p-0"></label>
+                <input asp-for="UserName" disabled class="form-control" />
+            </div>
+            <div class="mb-3 row p-1">
+                <label asp-for="FullName" class="p-0"></label>
+                <input asp-for="FullName" disabled class="form-control" />
+            </div>
+            <div class="mb-3 row p-1">
+                <label asp-for="DateOfBirth" class="p-0"></label>
+                <input asp-for="DateOfBirth" disabled class="form-control" />
+            </div>
+            <div class="mb-3 row p-1">
+                <label asp-for="Email" class="p-0"></label>
+                <input asp-for="Email" disabled class="form-control" />
+            </div>
+            <div class="mb-3 row p-1">
+                <label asp-for="PhoneNumber" class="p-0"></label>
+                <input asp-for="PhoneNumber" disabled class="form-control" />
+            </div>
+            <div class="mb-3 row p-1">
+                <label asp-for="Gender" class="p-0"></label>
+                <input value="@(Model.Gender ? "Male" : "Female")" disabled class="form-control" />
+  
+            </div>
+            <div class="mb-3 row p-1">
+                <label asp-for="Address" class="p-0"></label>
+                <input asp-for="Address" disabled class="form-control" />
+            </div>
+            <div class="mb-3 row p-1">
+                <label asp-for="JoinedDate" class="p-0"></label>
+                <input asp-for="JoinedDate" disabled class="form-control" />
+            </div>
+            <div class="mb-3 row p-1">
+                <label asp-for="ExpiredDate" class="p-0"></label>
+                <input asp-for="ExpiredDate" disabled class="form-control" />
+            </div>
+            <div class="mb-3 row p-1">
+                <label asp-for="StudioID" class="p-0"></label>
+                <input asp-for="Studio.StudioName" disabled class="form-control" />
+            </div>
+            <div class="col-sm-5">
+                <div class="col-sm-10">
+                    <dt>Avatar</dt>
+                    @if (@Model.ImageUrl != null)
+                    {
+                    <img src="@Model.ImageUrl" width="200" height="300"
+                            style="border-radius: 5px; border: 1px solid #bbb9b9" />
+                    }
+                    else
+                    {
+                    <p><i class="bi bi-image"></i>Picture here</p>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <a asp-action="Edit" asp-route-MemberId="@Model?.MemberId" class="btn btn-primary mx-2">Edit</a>
+            <a asp-action="MemberIndex" class="btn btn-primary mx-2">Back to List</a>
+            <a asp-controller="Member" asp-action="ExportToPDF" asp-route-MemberId="@Model?.MemberId" class="btn btn-primary mx-2">
+                Convert PDF
+            </a>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,36 @@
+﻿@model StudioManagement.Data.Studio
+@{
+    ViewData["Title"] = "Get";
+}
+
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-secondary bg-gradient py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Studio Informations</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-4 d-inline-flex">
+        <div class="border p-3 mt-4 col-8">
+            <div class="mb-3 row p-1">
+                <label asp-for="StudioName" class="p-0"></label>
+                <input asp-for="StudioName" disabled class="form-control" />
+            </div>
+            <div class="mb-3 row p-1">
+                <label asp-for="StudioAddress" class="p-0"></label>
+                <input asp-for="StudioAddress" disabled class="form-control" />
+            </div>
+            <dt class="mb-3 row p-1">
+                <label asp-for="StudioPhone" class="p-0"></label>
+                <input asp-for="StudioPhone" disabled class="form-control" />
+            </dt>
+        </div>
+        <div class="col-4 p-3 mt-4">
+            <div class="col-sm-10">
+                <img src="@Model.StudioPic" width="100%"
+                     style="border-radius: 5px; border: 1px solid #bbb9b9" />
+            </div>
+        </div>
+    </div>
+</div>

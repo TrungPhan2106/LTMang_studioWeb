@@ -1,0 +1,218 @@
+﻿@model IEnumerable<StudioManagement.Data.Member>
+@{
+    Pager pager = new Pager();
+    int pageNo = 0;
+    if(ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+        pageNo = pager.CurrentPage;
+    }
+}
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Member";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-secondary bg-gradient m-lg-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 class="text-white py-2">Member List</h1>
+            </div>
+            
+        </div>
+    </div>
+   <div class="card-body p-4">
+       <div class="row">
+            @using (Html.BeginForm("MemberIndex", "Member", FormMethod.Post, new { @class = "navbar-form navbar-right" }))
+            {
+                <div class="col-6 mb-3">
+                    <btn>
+                        <a asp-controller="Member" asp-action="Create" class="btn btn-dark">
+                            <i class="bi bi-person-plus"></i> Create New
+                        </a>
+                    </btn>
+                </div>
+            }
+
+            <table id="tblData" class="table table-hover" style="width:100%">
+                <thead class="table-dark">
+                    <tr style="text-align:center">
+                        <th>
+                            @Html.DisplayNameFor(model => model.Status)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.UserName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FullName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.DateOfBirth)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PhoneNumber)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Gender)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.JoinedDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ExpiredDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.StudioID)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                @*<tbody>
+                    @foreach (var item in Model)
+                    {
+                        @if (item.Status == "DeActive")
+                        {
+                            <tr class="table-warning" style="border-block-color:red">
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Status)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.UserName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FullName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DateOfBirth)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                                </td>
+                                <td>
+                                    @(item.Gender ? "Male" : "Female")
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.JoinedDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ExpiredDate)
+                                </td>
+                                <td>
+                                    <div>
+                                        <a asp-controller="Home" asp-action="Get" asp-route-StudioID="@item.StudioID" style="text-decoration:none; color:black">
+                                            @Html.DisplayFor(modelItem => item.Studio.StudioName)
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="w-50 btn-group" role="group">
+                                        <a asp-controller="Member" asp-action="Edit" asp-route-MemberId="@item.MemberId" class="btn mx-2 d-flex">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
+                                        <a asp-controller="Member" asp-action="Get" asp-route-MemberId="@item.MemberId" class="btn mx-2 d-flex">
+                                            <i class="bi bi-info-circle-fill"></i>
+                                        </a>
+                                        <a asp-controller="Member" asp-action="Delete" asp-route-MemberId="@item.MemberId" class="btn text-danger d-flex mx-2">
+                                            <i class="bi bi-person-dash-fill"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Status)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.UserName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FullName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DateOfBirth)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                                </td>
+                                <td>
+                                    @(item.Gender ? "Male" : "Female")
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.JoinedDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ExpiredDate)
+                                </td>
+                                <td>
+                                    <div>
+                                        <a asp-controller="Home" asp-action="Get" asp-route-StudioID="@item.StudioID" style="text-decoration:none; color:black">
+                                            @Html.DisplayFor(modelItem => item.Studio.StudioName)
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="w-50 btn-group" role="group">
+                                        <a asp-controller="Member" asp-action="Edit" asp-route-MemberId="@item.MemberId" class="btn mx-2 d-flex">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
+                                        <a asp-controller="Member" asp-action="Get" asp-route-MemberId="@item.MemberId" class="btn mx-2 d-flex">
+                                            <i class="bi bi-info-circle-fill"></i>
+                                        </a>
+                                        <a asp-controller="Member" asp-action="Delete" asp-route-MemberId="@item.MemberId" class="btn text-danger d-flex mx-2">
+                                            <i class="bi bi-person-dash-fill"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>*@
+            </table>
+            <div class="container cont">
+                @if (pager.TotalPages > 0)
+                {
+                    <ul class="pagination justify-content-end">
+                        @if (pager.CurrentPage > 1)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" asp-controller="Member" asp-action="MemberIndex" asp-route-pg="1">First</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" asp-controller="Member" asp-action="MemberIndex" asp-route-pg="@(pager.CurrentPage - 1)">Previous</a>
+                            </li>
+                        }
+                        @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
+                        {
+                            <li class="page-item @(pge == pager.CurrentPage ? "active" :"")">
+                                <a class="page-link" asp-controller="Member" asp-action="MemberIndex" asp-route-pg="@pge">@pge</a>
+                            </li>
+                        }
+                        @if (pager.CurrentPage < pager.TotalPages)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" asp-controller="Member" asp-action="MemberIndex" asp-route-pg="@(pager.CurrentPage + 1)">Next</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" asp-controller="Member" asp-action="MemberIndex" asp-route-pg="@(pager.TotalPages)">Last</a>
+                            </li>
+                        }
+                    </ul>
+                }
+                <a onclick="history.back()" class="btn btn-primary mx-2">
+                    <i class="bi bi-backspace" style="margin: 5px"></i>Go Back
+                </a>
+            </div>
+       </div>
+   </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/member.js"></script>
+}

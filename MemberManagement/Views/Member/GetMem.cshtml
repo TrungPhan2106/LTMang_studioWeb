@@ -1,0 +1,71 @@
+﻿@model StudioManagement.Data.Member
+
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-secondary bg-gradient py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Member Informations</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-4 d-inline-flex">
+        <div class="border p-3 mt-4 col-8">
+            <div class="mb-3 row p-1">
+                <label asp-for="UserName" class="p-0"></label>
+                <input asp-for="UserName" disabled class="form-control" />
+            </div>
+            <div class="mb-3 row p-1">
+                <label asp-for="FullName" class="p-0"></label>
+                <input asp-for="FullName" disabled class="form-control" />
+            </div>
+            <div class="mb-3 row p-1">
+                <label asp-for="DateOfBirth" class="p-0"></label>
+                <input asp-for="DateOfBirth" disabled class="form-control" />
+            </div>
+            <div class="mb-3 row p-1">
+                <label asp-for="Email" class="p-0"></label>
+                <input asp-for="Email" disabled class="form-control" />
+            </div>
+            <div class="mb-3 row p-1">
+                <label asp-for="PhoneNumber" class="p-0"></label>
+                <input asp-for="PhoneNumber" disabled class="form-control" />
+            </div>
+            <div class="mb-3 row p-1">
+                <label asp-for="Gender" class="p-0"></label>
+                <input value="@(Model.Gender ? "Male" : "Female")" disabled class="form-control" />
+
+            </div>
+            <div class="mb-3 row p-1">
+                <label asp-for="Address" class="p-0"></label>
+                <input asp-for="Address" disabled class="form-control" />
+            </div>
+            <div class="mb-3 row p-1">
+                <label asp-for="JoinedDate" class="p-0"></label>
+                <input asp-for="JoinedDate" disabled class="form-control" />
+            </div>
+            <div class="mb-3 row p-1">
+                <label asp-for="ExpiredDate" class="p-0"></label>
+                <input asp-for="ExpiredDate" disabled class="form-control" />
+            </div>
+            <div class="mb-3 row p-1">
+                <label asp-for="StudioID" class="p-0"></label>
+                <input asp-for="Studio.StudioName" disabled class="form-control" />
+            </div>
+        </div>
+        <div class="col-4 p-3 mt-4">
+            <div class="col-sm-10">
+                <p>Avatar</p>
+                @if (@Model.ImageUrl != null)
+                {
+                    <img src="@Model.ImageUrl" width="200" height="300"
+                         style="border-radius: 5px; border: 1px solid #bbb9b9" />
+                }
+                else
+                {
+                    <p><i class="bi bi-image"></i>Picture here</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

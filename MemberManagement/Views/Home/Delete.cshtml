@@ -1,0 +1,51 @@
+﻿@model StudioManagement.Data.Studio
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-secondary bg-gradient py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Delete Studio</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-4">
+        <form method="post">
+            <div class="border p-3 mt-4">
+                <div class="row pb-2">
+                    <h3 class="text-danger">Are you sure you want to delete this?</h3>
+                </div>
+                <div class="mb-3 row p-1">
+                    <label asp-for="StudioName" class="p-0"></label>
+                    <input asp-for="StudioName" disabled class="form-control" />
+                </div>
+                <div class="mb-3 row p-1">
+                    <label asp-for="StudioAddress" class="p-0"></label>
+                    <input asp-for="StudioAddress" disabled class="form-control" />
+                </div>
+                <dt class="mb-3 row p-1">
+                    <label asp-for="StudioPhone" class="p-0"></label>
+                    <input asp-for="StudioPhone" disabled class="form-control" />
+                </dt>
+            </div>
+            <div class="col-sm-5">
+                <dd class="col-sm-10">
+                    <img src="@Model.StudioPic" width="100%"
+                            style="border-radius: 5px; border: 1px solid #bbb9b9" />
+                </dd>
+            </div>
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="StudioID" />
+                <div class="row">
+                    <div class="col-6 col-md-3">
+                        <input type="submit" value="Delete" class="btn btn-danger" /> |
+                        <a asp-action="Index">Back to List</a>
+                    </div>
+                </div>     
+            </form>
+        </form>
+    </div>
+</div>

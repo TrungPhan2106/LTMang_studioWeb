@@ -1,0 +1,104 @@
+﻿@model IEnumerable<StudioManagement.Data.Studio>
+@{
+    Pager pager = new Pager();
+    int pageNo = 0;
+    if (ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+        pageNo = pager.CurrentPage;
+    }
+}
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div style="background:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXH1axTbWGSjfPrzLTTptcZsS55wImWfgoqw&usqp=CAU'); 
+        height:200px; width:100%; background-repeat:no-repeat; background-size:100%;" class="d-inline-flex">
+    <img style="height:200px; width:200px;" src="https://img.freepik.com/premium-vector/fitness-center-logo_25327-170.jpg?w=2000" />
+    <h1 class="text-light text-opacity-75 justify-content-center align-self-center" style="text-align:center; font-size:60px;justify-content:center">Welcome to GymXanhPT</h1>
+</div>
+
+@using (Html.BeginForm("Index", "Home", FormMethod.Post, new { @class = "navbar-form navbar-right" }))
+{
+    <div class="row pt-4 pb-3">
+        <btn class="col-6">
+            <a asp-controller="Home" asp-action="Create" class="btn btn-dark">
+                <i class="bi bi-plus-circle"></i> New Studio
+            </a>
+        </btn>
+    </div>
+}
+
+<div class="row pb-3">
+    @*@foreach(var studio in Model)
+    {
+        <div class="col-lg-3 colcol-sm-6">
+            <div class="row p-2">
+                <div class="col-12 p-1">
+                    <div class="card border-0 p-3 shadow border-top border-5 rounded" style="height: 425px">
+                        <div class="btn-group justify-content-end" role="group">
+                            <a asp-controller="Home" asp-action="Edit" asp-route-StudioID="@studio.StudioID" class="mx-2 text-black" >
+                                <i class="bi bi-tools"></i>
+                            </a>
+                            <a asp-controller="Home" asp-action="Get" asp-route-StudioID="@studio.StudioID" class="mx-2 text-black">
+                                <i class="bi bi-info-circle"></i>
+                            </a>
+                            <a asp-controller="Home" asp-action="Delete" asp-route-StudioID="@studio.StudioID" class="mx-2 text-danger">
+                                <i class="bi bi-x-circle"></i>
+                            </a> 
+                        </div>
+                        <div>
+                            <a asp-controller="Member" asp-action="MemberIndex" asp-route-StudioID="@studio.StudioID" style="text-decoration:none">
+                                <img src="@studio.StudioPic" class="card-img-top rounded" style="width:100%; height:200px" />
+                                <div class="pl-1">
+                                    <p class="card-title h5 text-danger text-uppercase text-center" style="font-weight:bold; margin-top:5px">@studio.StudioName</p>
+                                </div>
+                                <div class="pl-1">
+                                    <p class="card-title h6 text-dark opacity-75">Contact: @studio.StudioPhone</p>
+                                    <p class="card-title h6 text-dark opacity-75">Address: @studio.StudioAddress</p>
+                                </div>
+                                <div style="text-align:center">
+                                    <a asp-controller="Member" asp-action="Create" asp-route-StudioID="@studio.StudioID" class="btn btn-outline-secondary">
+                                        <i class="bi bi-person-plus"></i> Create Member
+                                    </a>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>*@
+
+<div class="container">
+    @if (pager.TotalPages > 0)
+    {
+        <ul class="pagination justify-content-end">
+            @if (pager.CurrentPage > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-controller="Home" asp-action="Index" asp-route-pg="1">First</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" asp-controller="Home" asp-action="Index" asp-route-pg="@(pager.CurrentPage - 1)">Previous</a>
+                </li>
+            }
+            @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
+            {
+                <li class="page-item @(pge == pager.CurrentPage ? "active" :"")">
+                    <a class="page-link" asp-controller="Home" asp-action="Index" asp-route-pg="@pge">@pge</a>
+                </li>
+            }
+            @if (pager.CurrentPage < pager.TotalPages)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-controller="Home" asp-action="Index" asp-route-pg="@(pager.CurrentPage + 1)">Next</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" asp-controller="Home" asp-action="Index" asp-route-pg="@(pager.TotalPages)">Last</a>
+                </li>
+            }
+        </ul>
+    }
+</div>
