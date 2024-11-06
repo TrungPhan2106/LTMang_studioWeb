@@ -44,6 +44,8 @@ namespace StudioManagement.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        //Xem thông tin Studio
         public ActionResult Get(int? StudioID)
         {
             if (!StudioID.HasValue)
