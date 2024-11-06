@@ -14,16 +14,16 @@ namespace StudioManagement.Models
         [Key]
         [DisplayName("ID")]
         public int MemberId { get; set; }
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
         [ForeignKey("UserId")]
-        public User User { get; set; }
+        public User? User { get; set; }
         [Required]
         [DisplayName("Date Of Birth")]
         [DataType(DataType.Date)]
         public DateTime DateOfBirth { get ; set; }
         [DisplayName("Phone")]
         public string? PhoneNumber { get; set; }
-        public bool  Gender { get; set; }
+        public bool? Gender { get; set; }
         [MaxLength(50)] 
         public string? Address { get; set; }
         [DisplayName("Joined Date")]

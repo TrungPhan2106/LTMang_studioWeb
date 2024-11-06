@@ -8,7 +8,7 @@ namespace StudioManagement.Models
     {
         [Key]
         public new int Id { get; set; }
-        public string rolename { get; set; }
-        public ICollection<User> User { get; set; }
+        public string? rolename { get; set; }
+        public ICollection<User>? User { get; set; }
     }
 }

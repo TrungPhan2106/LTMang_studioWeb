@@ -15,11 +15,11 @@ namespace StudioManagement.Models
         public MyDbContext(DbContextOptions<MyDbContext> options) : base(options)
         {
         }
-        public DbSet<User> Users { get; set; }
-        public DbSet<Member> Members { get; set; }
-        public DbSet<Studio> Studios { get; set; }
-        public DbSet<Employees> Employees { get; set; }
-        public DbSet<Role> Roles { get; set; }
+        public DbSet<User>? Users { get; set; }
+        public DbSet<Member>? Members { get; set; }
+        public DbSet<Studio>? Studios { get; set; }
+        public DbSet<Employees>? Employees { get; set; }
+        public DbSet<Role>? Roles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -27,7 +27,7 @@ namespace StudioManagement.Models
 
             modelBuilder.Entity<Member>(e =>
             {
-                e.Property(o => o.Gender).HasConversion(new BoolToZeroOneConverter<Int16>())
+                e.Property(o => o.Gender)
                     .HasColumnType("bit");
             });
             modelBuilder.Entity<User>()

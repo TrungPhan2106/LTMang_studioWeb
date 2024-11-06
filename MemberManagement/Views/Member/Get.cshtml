@@ -1,4 +1,4 @@
-﻿@model StudioManagement.Data.Member
+﻿@model StudioManagement.Models.Member
 
 @{
     ViewData["Title"] = "Get";
@@ -14,29 +14,10 @@
     </div>
     <div class="card-body p-4">
         <div class="border p-3 mt-4">
-            <div class="mb-3 row p-1">
-                <label asp-for="Status" class="p-0"></label>
-                <input asp-for="Status" disabled class="form-control" />
-            </div>
-            <div class="mb-3 row p-1">
-                <label asp-for="MemberUUId" class="p-0"></label>
-                <input asp-for="MemberUUId" disabled class="form-control" />
-            </div>
-            <div class="mb-3 row p-1">
-                <label asp-for="UserName" class="p-0"></label>
-                <input asp-for="UserName" disabled class="form-control" />
-            </div>
-            <div class="mb-3 row p-1">
-                <label asp-for="FullName" class="p-0"></label>
-                <input asp-for="FullName" disabled class="form-control" />
-            </div>
+            
             <div class="mb-3 row p-1">
                 <label asp-for="DateOfBirth" class="p-0"></label>
                 <input asp-for="DateOfBirth" disabled class="form-control" />
-            </div>
-            <div class="mb-3 row p-1">
-                <label asp-for="Email" class="p-0"></label>
-                <input asp-for="Email" disabled class="form-control" />
             </div>
             <div class="mb-3 row p-1">
                 <label asp-for="PhoneNumber" class="p-0"></label>
@@ -44,7 +25,7 @@
             </div>
             <div class="mb-3 row p-1">
                 <label asp-for="Gender" class="p-0"></label>
-                <input value="@(Model.Gender ? "Male" : "Female")" disabled class="form-control" />
+                <input asp-for="Gender" disabled class="form-control" />
   
             </div>
             <div class="mb-3 row p-1">
@@ -54,10 +35,6 @@
             <div class="mb-3 row p-1">
                 <label asp-for="JoinedDate" class="p-0"></label>
                 <input asp-for="JoinedDate" disabled class="form-control" />
-            </div>
-            <div class="mb-3 row p-1">
-                <label asp-for="ExpiredDate" class="p-0"></label>
-                <input asp-for="ExpiredDate" disabled class="form-control" />
             </div>
             <div class="mb-3 row p-1">
                 <label asp-for="StudioID" class="p-0"></label>

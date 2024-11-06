@@ -1,4 +1,4 @@
-﻿@model StudioManagement.Data.Member
+﻿@model StudioManagement.Models.Member
 
 @{
     ViewData["Title"] = "Edit";
@@ -19,30 +19,11 @@
             <div class="border p-3 mt-4">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="MemberId" />
-                <input type="hidden" asp-for="MemberUUId" />
-                <input type="hidden" asp-for="CreatedDate" />
-                <input type="hidden" asp-for="UpdatedDate" />
                 <input type="hidden" asp-for="JoinedDate" />
-                <input type="hidden" asp-for="Status" />
-                <div class="mb-3 row p-1">
-                    <label asp-for="UserName" class="p-0"></label>
-                    <input asp-for="UserName" class="form-control" />
-                    <span asp-validation-for="UserName" class="text-danger"></span>
-                </div>
-                <div class="mb-3 row p-1">
-                    <label asp-for="FullName" class="p-0"></label>
-                    <input asp-for="FullName" class="form-control" />
-                    <span asp-validation-for="FullName" class="text-danger"></span>
-                </div>
                 <div class="mb-3 row p-1">
                     <label asp-for="DateOfBirth" class="p-0"></label>
                     <input asp-for="DateOfBirth" class="form-control" />
                     <span asp-validation-for="DateOfBirth" class="text-danger"></span>
-                </div>
-                <div class="mb-3 row p-1">
-                    <label asp-for="Email" class="p-0"></label>
-                    <input asp-for="Email" class="form-control" />
-                    <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
                 <div class="mb-3 row p-1">
                     <label asp-for="PhoneNumber" class="p-0"></label>
@@ -72,11 +53,6 @@
                     <label asp-for="Address" class="p-0"></label>
                     <input asp-for="Address" class="form-control" />
                     <span asp-validation-for="Address" class="text-danger"></span>
-                </div>
-                <div class="mb-3 row p-1">
-                    <label asp-for="ExpiredDate" class="p-0"></label>
-                    <input asp-for="ExpiredDate" class="form-control" />
-                    <span asp-validation-for="ExpiredDate" class="text-danger"></span>
                 </div>
                 <div class="mb-3 row p-1">
                     <label asp-for="StudioID" class="p-0"></label>

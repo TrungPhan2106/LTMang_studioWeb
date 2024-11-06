@@ -1,4 +1,4 @@
-﻿@model StudioManagement.Data.Member
+﻿@model StudioManagement.Models.Member
 
 @{
     ViewData["Title"] = "Delete";
@@ -20,20 +20,8 @@
                     <h3 class="text-danger">Are you sure you want to delete this?</h3>
                 </div>
                 <div class="mb-3 row p-1">
-                    <label asp-for="UserName" class="p-0"></label>
-                    <input asp-for="UserName" disabled class="form-control" />
-                </div>
-                <div class="mb-3 row p-1">
-                    <label asp-for="FullName" class="p-0"></label>
-                    <input asp-for="FullName" disabled class="form-control" />
-                </div>
-                <div class="mb-3 row p-1">
                     <label asp-for="DateOfBirth" class="p-0"></label>
                     <input asp-for="DateOfBirth" disabled class="form-control" />
-                </div>
-                <div class="mb-3 row p-1">
-                    <label asp-for="Email" class="p-0"></label>
-                    <input asp-for="Email" disabled class="form-control" />
                 </div>
                 <div class="mb-3 row p-1">
                     <label asp-for="PhoneNumber" class="p-0"></label>
@@ -41,7 +29,7 @@
                 </div>
                 <div class="mb-3 row p-1">
                     <label asp-for="Gender" class="p-0"></label>
-                    <input value="@(Model.Gender ? "Male" : "Female")" disabled class="form-control" />
+                    <input asp-for="Gender" disabled class="form-control" />
                 </div>
                 <div class="mb-3 row p-1">
                     <label asp-for="Address" class="p-0"></label>
@@ -50,10 +38,6 @@
                 <div class="mb-3 row p-1">
                     <label asp-for="JoinedDate" class="p-0"></label>
                     <input asp-for="JoinedDate" disabled class="form-control" />
-                </div>
-                <div class="mb-3 row p-1">
-                    <label asp-for="ExpiredDate" class="p-0"></label>
-                    <input asp-for="ExpiredDate" disabled class="form-control" />
                 </div>
                 <div class="mb-3 row p-1">
                     <label asp-for="StudioID" class="p-0"></label>
@@ -77,11 +61,6 @@
         </form>    
         <form asp-action="Delete">
             <input type="hidden" asp-for="MemberId" />
-            <input type="hidden" asp-for="MemberUUId" />
-            <input type="hidden" asp-for="Status" />
-            <input type="hidden" asp-for="CreatedDate" />
-            <input type="hidden" asp-for="UpdatedDate" />
-            <input type="hidden" asp-for="IsDeleted" />
             <input type="submit" value="Delete" class="btn btn-danger" /> |
             <a asp-action="Index">Back to List</a>
         </form>

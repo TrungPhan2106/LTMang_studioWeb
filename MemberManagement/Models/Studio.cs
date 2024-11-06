@@ -13,13 +13,13 @@ namespace StudioManagement.Models
         public int StudioID { get; set; }
         [MaxLength(45)]
         [DisplayName("Studio Name")]
-        public string StudioName { get; set; }
+        public string? StudioName { get; set; }
         [MaxLength(100)]
         [DisplayName("Address")]
-        public string StudioAddress { get; set; }
+        public string? StudioAddress { get; set; }
         [MaxLength(45)]
         [DisplayName("Contact")]
-        public string StudioPhone { get; set; }
+        public string? StudioPhone { get; set; }
         public string? StudioPic { get; set; }
     }
 }
