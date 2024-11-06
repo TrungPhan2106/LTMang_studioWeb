@@ -46,7 +46,9 @@ namespace StudioManagement.Controllers
 
             if (member == null)
             {
-                return NotFound();
+                member = new Member { UserId = int.Parse(userId) };
+                _context.Members.Add(member);
+                _context.SaveChanges();
             }
 
             return View(member);

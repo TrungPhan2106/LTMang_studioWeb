@@ -40,7 +40,9 @@ namespace StudioManagement.Controllers
             var employee = _context.Employees.FirstOrDefault(e => e.UserId.ToString() == userId);
             if (employee == null)
             {
-                return NotFound();
+                employee = new Employees { UserId = int.Parse(userId) };
+                _context.Employees.Add(employee);
+                _context.SaveChanges();
             }
             return View(employee);
         }

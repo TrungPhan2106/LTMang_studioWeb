@@ -20,7 +20,7 @@ namespace StudioManagement.Models
         [Required]
         [DisplayName("Date Of Birth")]
         [DataType(DataType.Date)]
-        public DateTime DateOfBirth { get ; set; }
+        public DateTime? DateOfBirth { get ; set; }
         [DisplayName("Phone")]
         public string? PhoneNumber { get; set; }
         public bool? Gender { get; set; }
@@ -28,7 +28,7 @@ namespace StudioManagement.Models
         public string? Address { get; set; }
         [DisplayName("Joined Date")]
         [DataType(DataType.Date)]
-        public DateTime JoinedDate { get; set; }
+        public DateTime? JoinedDate { get; set; }
         [DisplayName("Avatar")]
         public string? ImageUrl { get; set; }
         [DisplayName("Studio")]
