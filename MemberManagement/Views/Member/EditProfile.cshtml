@@ -9,12 +9,12 @@
     <div class="card-header bg-secondary bg-gradient py-3">
         <div class="row">
             <div class="col-12 text-center">
-                <h2 class="text-white py-2">Edit Member</h2>
+                <h2 class="text-white py-2">Edit Profile</h2>
             </div>
         </div>
     </div>
     <div class="card-body p-4">
-        <form asp-action="Edit" enctype="multipart/form-data" method="post">
+        <form asp-action="EditProfile" enctype="multipart/form-data" method="post">
             <input asp-for="ImageUrl" hidden />
             <div class="border p-3 mt-4">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -53,13 +53,6 @@
                     <label asp-for="Address" class="p-0"></label>
                     <input asp-for="Address" class="form-control" />
                     <span asp-validation-for="Address" class="text-danger"></span>
-                </div>
-                <div class="mb-3 row p-1">
-                    <label asp-for="StudioID" class="p-0"></label>
-                    <select asp-for="StudioID" asp-items="ViewBag.StudioList" class="form-select">
-                        <option disabled selected>--Select Studio--</option>
-                    </select>
-                    <span asp-validation-for="StudioID" class="text-danger"></span>
                 </div>
                 <div class="mb-3 row p-1">
                     <label asp-for="ImageUrl" class="p-0"></label>

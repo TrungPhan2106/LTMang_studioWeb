@@ -8,24 +8,24 @@
     <div class="card-header bg-secondary bg-gradient py-3">
         <div class="row">
             <div class="col-12 text-center">
-                <h2 class="text-white py-2">Studio Informations</h2>
+                <h2 class="text-white py-2">Studio Information</h2>
             </div>
         </div>
     </div>
     <div class="card-body">
         <div class="border p-3 mt-4">
             <div class="mb-3 row p-1">
-                <label asp-for="StudioName" class="p-0"></label>
+                <label asp-for="StudioName" class="form-label p-0"></label>
                 <input asp-for="StudioName" disabled class="form-control" />
             </div>
             <div class="mb-3 row p-1">
-                <label asp-for="StudioAddress" class="p-0"></label>
+                <label asp-for="StudioAddress" class="form-label p-0"></label>
                 <input asp-for="StudioAddress" disabled class="form-control" />
             </div>
-            <dt class="mb-3 row p-1">
-                <label asp-for="StudioPhone" class="p-0"></label>
+            <div class="mb-3 row p-1">
+                <label asp-for="StudioPhone" class="form-label p-0"></label>
                 <input asp-for="StudioPhone" disabled class="form-control" />
-            </dt>
+            </div>
             <div class="col-sm-5">
                 <div class="col-sm-10">
                     <img src="@Model.StudioPic" width="100%"
@@ -34,22 +34,9 @@
             </div>
         </div>
         <div class="mt-3 mb-3 d-inline-flex col-12" style="justify-content:space-between">
-            <div>
-                <a asp-action="Edit" asp-route-StudioID="@Model?.StudioID" class="btn btn-primary mx-2">Edit</a>
-                <a asp-controller="Member" asp-action="MemberIndex" asp-route-StudioID="@Model?.StudioID" class="btn btn-primary mx-2">
-                    See Member
-                </a>
-                <a class="btn btn-primary mx-2" asp-controller="Member" asp-action="ExportMembersInExcel" asp-route-StudioID="@Model?.StudioID">
-                    <i class="bi bi-download" style="margin: 5px"></i>Members Excel
-                </a>
-                <a asp-controller="Home" asp-action="ExportToPDF" asp-route-StudioID="@Model?.StudioID" class="btn btn-primary mx-2">
-                    Convert PDF
-                </a>
-            </div>
             <a onclick="history.back()" class="btn btn-primary mx-2">
-                <i class="bi bi-backspace" style="margin: 5px"></i>Go Back
+                <i class="bi bi-backspace" style="margin: 5px"></i> Go Back
             </a>
         </div>
     </div>
 </div>
-

@@ -24,7 +24,7 @@ namespace StudioManagement.Controllers
         // Xem thông tin Studio
         public IActionResult ViewStudio(int id)
         {
-            var studio = _context.Studios.Find(id);
+            var studio = _context.Studios?.Find(id);
             if (studio == null)
             {
                 return NotFound();
@@ -148,7 +148,7 @@ namespace StudioManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteMember(int id, int studioId)
         {
-            var member = _context.Members.Find(id);
+            var member = _context.Members?.Find(id);
             if (member != null)
             {
                 _context.Members.Remove(member);
@@ -161,7 +161,7 @@ namespace StudioManagement.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            var studio = _context.Studios.Find(id);
+            var studio = _context.Studios?.Find(id);
             if (studio == null)
             {
                 return NotFound();
