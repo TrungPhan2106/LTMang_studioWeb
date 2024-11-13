@@ -1,0 +1,48 @@
+﻿@model StudioManagement.Models.Studio
+
+@{
+    ViewData["Title"] = "Edit Studio";
+}
+
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-secondary bg-gradient py-3">
+        <h2 class="text-white text-center">Edit Studio</h2>
+    </div>
+    <div class="card-body p-4">
+        <form asp-action="EditStudio" enctype="multipart/form-data" method="post">
+            <input asp-for="StudioID" type="hidden" />
+            <div class="mb-3">
+                <label asp-for="StudioName" class="form-label"></label>
+                <input asp-for="StudioName" class="form-control" />
+                <span asp-validation-for="StudioName" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="StudioAddress" class="form-label"></label>
+                <input asp-for="StudioAddress" class="form-control" />
+                <span asp-validation-for="StudioAddress" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="StudioPhone" class="form-label"></label>
+                <input asp-for="StudioPhone" class="form-control" />
+                <span asp-validation-for="StudioPhone" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label for="file">Studio Image</label>
+                <input asp-for="StudioPic" type="file" name="file" class="form-control" />
+                @if (!string.IsNullOrEmpty(Model.StudioPic))
+                {
+                    <img src="~/@Model.StudioPic" alt="Studio Image" class="img-thumbnail mt-2" width="150" />
+                }
+                else
+                {
+                    <img src="~/images/default-studio.png" alt="Default Studio" class="img-thumbnail mt-2" width="150" />
+                }
+                <span asp-validation-for="StudioPic" class="text-danger"></span>
+            </div>
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a asp-action="Get" asp-route-id="@Model.StudioID" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

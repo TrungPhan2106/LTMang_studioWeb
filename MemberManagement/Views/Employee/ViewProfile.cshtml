@@ -1,0 +1,28 @@
+﻿@model StudioManagement.Models.Employees
+
+@{
+    ViewData["Title"] = "View Profile";
+}
+
+<h2>Profile</h2>
+
+<div class="card" style="max-width: 600px;">
+    <div class="card-body text-center">
+        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+        {
+            <img src="~/@Model.ImageUrl" alt="Profile Image" class="img-thumbnail mb-3" width="200" />
+        }
+        else
+        {
+            <img src="~/images/default-profile.png" alt="Profile Image" class="img-thumbnail mb-3" width="200" />
+        }
+
+        <h4>@Model.User?.FullName() ?? "No Full Name"</h4>
+        <p><strong>Date of Birth:</strong> @Model.DateOfBirth?.ToString("yyyy-MM-dd")</p>
+        <p><strong>Phone:</strong> @Model.PhoneNumber</p>
+        <p><strong>Gender:</strong> @(Model.Gender == true ? "Male" : "Female")</p>
+        <p><strong>Studio:</strong> @Model.Studio?.StudioName ?? "No Studio Assigned"</p>
+
+        <a asp-action="EditProfile" class="btn btn-primary mt-3">Edit Profile</a>
+    </div>
+</div>

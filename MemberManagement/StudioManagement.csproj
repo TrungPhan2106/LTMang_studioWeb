@@ -24,7 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Employee\" />
     <Folder Include="wwwroot\images\member\" />
     <Folder Include="wwwroot\images\employee\" />
     <Folder Include="wwwroot\images\studio\" />

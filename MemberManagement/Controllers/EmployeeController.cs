@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using StudioManagement.Models;
 using System.IO;
 using System.Linq;
@@ -21,17 +22,6 @@ namespace StudioManagement.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
-        // Xem thông tin Studio
-        public IActionResult ViewStudio(int id)
-        {
-            var studio = _context.Studios?.Find(id);
-            if (studio == null)
-            {
-                return NotFound();
-            }
-            return View(studio);
-        }
-
         // Xem và cập nhật thông tin bản thân
         [HttpGet]
         public IActionResult EditProfile()
@@ -44,6 +34,7 @@ namespace StudioManagement.Controllers
                 _context.Employees.Add(employee);
                 _context.SaveChanges();
             }
+            ViewBag.StudioList = new SelectList(_context.Studios, "StudioID", "StudioName");
             return View(employee);
         }
 
@@ -72,6 +63,7 @@ namespace StudioManagement.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction("ViewProfile");
             }
+            ViewBag.StudioList = new SelectList(_context.Studios, "StudioID", "StudioName");
             return View(model);
         }
 
@@ -159,7 +151,7 @@ namespace StudioManagement.Controllers
 
         // Chỉnh sửa thông tin Studio cho employee
         [HttpGet]
-        public IActionResult Edit(int id)
+        public IActionResult EditStudio(int id)
         {
             var studio = _context.Studios?.Find(id);
             if (studio == null)
@@ -170,7 +162,7 @@ namespace StudioManagement.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(Studio model, IFormFile? file)
+        public async Task<IActionResult> EditStudio(Studio model, IFormFile? file)
         {
             if (ModelState.IsValid)
             {

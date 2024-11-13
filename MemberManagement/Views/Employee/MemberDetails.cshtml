@@ -1,9 +1,9 @@
 ﻿@model StudioManagement.Models.Member
 @{
-    ViewData["Title"] = "View Profile";
+    ViewData["Title"] = "Member Details";
 }
 
-<h2 class="text-center my-4">Profile Information</h2>
+<h2 class="text-center my-4">Member Details</h2>
 
 <div class="card shadow-lg mb-4">
     <div class="card-header bg-primary text-white text-center py-3">
@@ -56,9 +56,11 @@
     </div>
 </div>
 
-<!-- Action Button to Edit Profile -->
+<!-- Action Buttons Delete Member -->
 <div class="text-center my-4">
-    <a href="@Url.Action("EditProfile", "Member")" class="btn btn-primary">
-        <i class="bi bi-pencil-square"></i> Edit Profile
-    </a>
+    <form asp-action="DeleteMember" asp-route-id="@Model.MemberId" asp-route-studioId="@Model.StudioID" method="post" class="d-inline">
+        <button type="submit" class="btn btn-danger">
+            <i class="bi bi-trash"></i> Delete Member
+        </button>
+    </form>
 </div>
