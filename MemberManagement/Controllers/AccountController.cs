@@ -62,15 +62,14 @@ namespace StudioManagement.Controllers
         public IActionResult Login() => View();
 
         [HttpPost]
-        public async Task<IActionResult> Login([Bind("Email,Password")] User model)
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (ModelState.IsValid)
             {
-                // Tìm user theo email
+                // Logic đăng nhập
                 var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
                 if (user != null)
                 {
-                    // Xác thực mật khẩu
                     var passwordHasher = new PasswordHasher<User>();
                     var result = passwordHasher.VerifyHashedPassword(user, user.Password, model.Password);
 
@@ -78,11 +77,11 @@ namespace StudioManagement.Controllers
                     {
                         // Thực hiện đăng nhập
                         var claims = new List<Claim>
-                        {
-                            new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()),
-                            new Claim(ClaimTypes.Email, user.Email),
-                            new Claim(ClaimTypes.Role, user.Role?.rolename ?? "Member")
-                        };
+                {
+                    new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()),
+                    new Claim(ClaimTypes.Email, user.Email),
+                    new Claim(ClaimTypes.Role, user.Role?.rolename ?? "Member")
+                };
 
                         var claimsIdentity = new ClaimsIdentity(claims, IdentityConstants.ApplicationScheme);
                         await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, new ClaimsPrincipal(claimsIdentity));
@@ -98,7 +97,6 @@ namespace StudioManagement.Controllers
             }
             return View(model);
         }
-
         // Đăng xuất
         public async Task<IActionResult> Logout()
         {

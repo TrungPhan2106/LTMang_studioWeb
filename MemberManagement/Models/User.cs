@@ -18,10 +18,10 @@ namespace StudioManagement.Models
         [DisplayName("UUID")]
         public string? UserUUID { get; set; } = string.Empty;
         [MaxLength(45)]
-        [DisplayName("User")]
+        [DisplayName("Họ (First Name)")]
         public string? FirstName { get; set; }
         [MaxLength(45)]
-        [DisplayName("Full Name")]
+        [DisplayName("Tên (Last Name)")]
         public string? LastName { get; set; }
 
         [Required]

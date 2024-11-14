@@ -31,7 +31,9 @@
                             </a>
                         </div>
                         <div>
-                            <img src="@studio.StudioPic" class="card-img-top rounded" style="width:100%; height:200px" />
+                            <img src="@(string.IsNullOrEmpty(studio.StudioPic) ? Url.Content("~/images/default-studio.png") : studio.StudioPic)"
+                                 class="card-img-top rounded"
+                                 style="width:100%; height:200px" />
                             <div class="pl-1">
                                 <p class="card-title h5 text-danger text-uppercase text-center" style="font-weight:bold; margin-top:5px">@studio.StudioName</p>
                             </div>

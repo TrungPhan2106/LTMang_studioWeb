@@ -30,6 +30,9 @@
             <div class="form-group">
                 <label asp-for="Password" class="control-label"></label>
                 <input asp-for="Password" type="password" class="form-control" />
+                <small class="form-text text-muted">
+                    Mật khẩu phải có độ dài từ 8 đến 15 ký tự, chứa ít nhất một chữ cái thường, một chữ cái in hoa, và một chữ số.
+                </small>
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group">
