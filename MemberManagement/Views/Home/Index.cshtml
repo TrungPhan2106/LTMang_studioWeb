@@ -40,9 +40,18 @@
                                 <p class="card-title h6 text-dark opacity-75">Address: @studio.StudioAddress</p>
                             </div>
                             <div style="text-align:center">
-                                <a asp-controller="Member" asp-action="RegisterStudio" asp-route-studioId="@studio.StudioID" class="btn btn-outline-secondary">
-                                    <i class="bi bi-person-plus"></i> Register Studio
-                                </a>
+                                @if (User.IsInRole("Member"))
+                                {
+                                    <a asp-controller="Member" asp-action="RegisterStudio" asp-route-studioId="@studio.StudioID" class="btn btn-outline-secondary">
+                                        <i class="bi bi-person-plus"></i> Register Studio
+                                    </a>
+                                }
+                                else if (User.IsInRole("Employee"))
+                                {
+                                    <a asp-controller="Employee" asp-action="EditStudio" asp-route-id="@studio.StudioID" class="btn btn-outline-secondary">
+                                        <i class="bi bi-pencil-square"></i> Edit Studio
+                                    </a>
+                                }
                             </div>
                         </div>
                     </div>

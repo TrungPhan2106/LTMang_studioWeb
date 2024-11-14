@@ -23,21 +23,51 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link bg-dark" asp-area="" asp-controller="Home" asp-action="Index">Studio</a>
+                            <a class="nav-link bg-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link bg-dark" asp-area="" asp-controller="Member" asp-action="MemberIndex">Member</a>
-                        </li>
+
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            @if (User.IsInRole("Member"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link bg-dark" asp-area="" asp-controller="Member" asp-action="ViewProfile">View Profile</a>
+                                </li>
+                            }
+                            else if (User.IsInRole("Employee"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link bg-dark" asp-area="" asp-controller="Member" asp-action="MemberIndex">Member List</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link bg-dark" asp-area="" asp-controller="Employee" asp-action="ViewProfile">View Profile</a>
+                                </li>
+                            }
+                        }
+
+                        <!-- Privacy link, always visible -->
                         <li class="nav-item">
                             <a class="nav-link bg-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                     </ul>
-                    <form class="nav-item d-inline-flex" role="search">
-                            <input class="form-control me-2" style="width:max-content" type="text" name="strSearch" placeholder="Search">
-                            <button class="btn btn-outline-success" type="submit">
-                                <i class="bi bi-search"></i>
-                            </button>
-                    </form>
+
+                    <ul class="navbar-nav">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+                            </li>
+                        }
+                    </ul>
                 </div>
             </div>
         </nav>
