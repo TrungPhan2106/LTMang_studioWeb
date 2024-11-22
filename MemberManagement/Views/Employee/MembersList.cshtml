@@ -17,6 +17,7 @@
                     <th>Phone</th>
                     <th>Address</th>
                     <th>Date of Birth</th>
+                    <th>Studio</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -29,6 +30,7 @@
                         <td>@member.PhoneNumber</td>
                         <td>@member.Address</td>
                         <td>@member.DateOfBirth?.ToString("yyyy-MM-dd")</td>
+                        <td>@member.Studio?.StudioName</td>
                         <td>
                             <a asp-action="MemberDetails" asp-route-id="@member.MemberId" class="btn btn-info btn-sm">Details</a>
                             <form asp-action="DeleteMember" asp-route-id="@member.MemberId" asp-route-studioId="@member.StudioID" method="post" class="d-inline">

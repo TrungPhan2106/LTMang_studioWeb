@@ -15,6 +15,7 @@
     </div>
     <div class="card-body p-4">
         <form asp-action="EditProfile" enctype="multipart/form-data" method="post">
+            <input type="hidden" asp-for="UserId" />
             <input asp-for="ImageUrl" hidden />
             <div class="border p-3 mt-4">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -54,7 +55,7 @@
 
                 <div class="mb-3 row p-1">
                     <label asp-for="StudioID" class="p-0"></label>
-                    <select asp-for="StudioID" asp-items="ViewBag.Studios" class="form-control">
+                    <select asp-for="StudioID" asp-items="ViewBag.StudioList" class="form-control">
                         <option value="">-- Select Studio --</option>
                     </select>
                     <span asp-validation-for="StudioID" class="text-danger"></span>

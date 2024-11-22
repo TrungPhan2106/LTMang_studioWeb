@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using NuGet.Versioning;
 using StudioManagement.Models;
 using System.IO;
 using System.Linq;
@@ -10,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace StudioManagement.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = "EmployeeOnly")]
     public class EmployeeController : Controller
     {
         private readonly MyDbContext _context;
@@ -26,11 +28,24 @@ namespace StudioManagement.Controllers
         [HttpGet]
         public IActionResult EditProfile()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var employee = _context.Employees.FirstOrDefault(e => e.UserId.ToString() == userId);
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!int.TryParse(userIdString, out int userId))
+            {
+                return BadRequest("Invalid UserId."); // Trả về lỗi nếu UserId không hợp lệ
+            }
+
+            // Tìm Employee trong database
+            var employee = _context.Employees.FirstOrDefault(e => e.UserId == userId);
+
             if (employee == null)
             {
-                employee = new Employees { UserId = int.Parse(userId) };
+                // Tạo Employee mới nếu không tìm thấy
+                employee = new Employees
+                {
+                    UserId = userId,
+                    DateOfBirth = DateTime.Now // Gán giá trị mặc định
+                };
                 _context.Employees.Add(employee);
                 _context.SaveChanges();
             }
@@ -54,10 +69,24 @@ namespace StudioManagement.Controllers
                 existingEmployee.DateOfBirth = model.DateOfBirth;
                 existingEmployee.StudioID = model.StudioID;
 
-                if (file != null && IsValidImageFile(file))
+                // Handle file upload
+                if (file != null && file.Length > 0)
                 {
-                    string employeePath = Path.Combine(_webHostEnvironment.WebRootPath, @"images\employee");
-                    existingEmployee.ImageUrl = await SaveImage(file, employeePath, existingEmployee.ImageUrl);
+                    // Define the path to save the image
+                    var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "employee");
+                    Directory.CreateDirectory(uploadsFolder); // Ensure the directory exists
+
+                    var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                    // Save the file
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await file.CopyToAsync(fileStream);
+                    }
+
+                    // Update the ImageUrl property
+                    existingEmployee.ImageUrl = Path.Combine("member", uniqueFileName).Replace("\\", "/");
                 }
 
                 await _context.SaveChangesAsync();
@@ -106,29 +135,53 @@ namespace StudioManagement.Controllers
         public IActionResult ViewProfile()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var employee = _context.Employees.FirstOrDefault(e => e.UserId.ToString() == userId);
+            var employee = _context.Employees
+            .Include(e => e.User)
+            .Include(e => e.Studio) 
+            .FirstOrDefault(e => e.UserId.ToString() == userId);
             if (employee == null)
             {
-                return NotFound();
+                TempData["Message"] = "Bạn cần cập nhật thông tin cá nhân.";
+                return RedirectToAction("EditProfile"); // Chuyển hướng đến EditProfile
             }
             return View(employee);
         }
 
         // Quản lý member trong Studio
-        public IActionResult MembersList(int studioId)
+        public IActionResult MembersList(int? studioId)
         {
-            var studio = _context.Studios.Find(studioId);
-            if (studio == null)
+            if (studioId.HasValue)
             {
-                return NotFound();
+                var studio = _context.Studios.Find(studioId.Value);
+                if (studio == null)
+                {
+                    return NotFound();
+                }
+
+                // Lấy các thành viên thuộc studioId
+                var members = _context.Members
+                    .Include(m => m.User) .Include(m => m.Studio)
+                    .Where(m => m.StudioID == studioId.Value)
+                    .ToList();
+
+                return View(members);
             }
-            var members = _context.Members.Where(m => m.StudioID == studioId).ToList();
-            return View(members);
+
+            // Lấy tất cả các thành viên nếu không có studioId
+            var allMembers = _context.Members
+                .Include(m => m.User)
+                .Include(m => m.Studio)
+                .ToList();
+            return View(allMembers);
         }
+
 
         public IActionResult MemberDetails(int id)
         {
-            var member = _context.Members.Find(id);
+            var member = _context.Members
+                .Include(m => m.User)
+                .Include(m => m.Studio)
+                .FirstOrDefault(m => m.MemberId == id);
             if (member == null)
             {
                 return NotFound();
@@ -160,6 +213,12 @@ namespace StudioManagement.Controllers
             }
             return View(studio);
         }
+        [HttpGet]
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> EditStudio(Studio model, IFormFile? file)
@@ -176,14 +235,28 @@ namespace StudioManagement.Controllers
                 existingStudio.StudioAddress = model.StudioAddress;
                 existingStudio.StudioPhone = model.StudioPhone;
 
-                if (file != null && IsValidImageFile(file))
+                if (file != null && file.Length > 0)
                 {
-                    string studioPath = Path.Combine(_webHostEnvironment.WebRootPath, @"images\studio");
-                    existingStudio.StudioPic = await SaveImage(file, studioPath, existingStudio.StudioPic);
+                    // Define the path to save the image
+                    var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "studio");
+                    Directory.CreateDirectory(uploadsFolder); // Ensure the directory exists
+
+                    var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                    // Save the file
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await file.CopyToAsync(fileStream);
+                    }
+
+                    // Update the ImageUrl property
+                    existingStudio.StudioPic = Path.Combine("studio", uniqueFileName).Replace("\\", "/");
                 }
 
+
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Get", "Studio", new { id = model.StudioID });
+                return RedirectToAction("Index", "Home");
             }
             return View(model);
         }

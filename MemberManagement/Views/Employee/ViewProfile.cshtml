@@ -1,28 +1,59 @@
 ﻿@model StudioManagement.Models.Employees
-
 @{
     ViewData["Title"] = "View Profile";
 }
 
-<h2>Profile</h2>
+<h2 class="text-center my-4">Profile Information</h2>
 
-<div class="card" style="max-width: 600px;">
-    <div class="card-body text-center">
+<div class="card shadow-lg mb-4">
+    <div class="card-header bg-primary text-white text-center py-3">
+        <h4 class="mb-0">Personal Information</h4>
+    </div>
+    <div class="card-body">
+        <!-- Profile Image -->
         @if (!string.IsNullOrEmpty(Model.ImageUrl))
         {
-            <img src="~/@Model.ImageUrl" alt="Profile Image" class="img-thumbnail mb-3" width="200" />
+            <div class="text-center mb-4">
+                <img src="~/@Model.ImageUrl" alt="Profile Image" class="img-fluid rounded-circle shadow" width="200" />
+            </div>
         }
         else
         {
-            <img src="~/images/default-profile.png" alt="Profile Image" class="img-thumbnail mb-3" width="200" />
+            <div class="text-center mb-4">
+                <img src="~/images/default-profile.png" alt="Profile Image" class="img-fluid rounded-circle shadow" width="200" />
+            </div>
         }
 
-        <h4>@Model.User?.FullName() ?? "No Full Name"</h4>
-        <p><strong>Date of Birth:</strong> @Model.DateOfBirth?.ToString("yyyy-MM-dd")</p>
-        <p><strong>Phone:</strong> @Model.PhoneNumber</p>
-        <p><strong>Gender:</strong> @(Model.Gender == true ? "Male" : "Female")</p>
-        <p><strong>Studio:</strong> @Model.Studio?.StudioName ?? "No Studio Assigned"</p>
+        <!-- User Full Name -->
+        <div class="mb-3">
+            <h5>@Model.User?.FullName()</h5>
+        </div>
 
-        <a asp-action="EditProfile" class="btn btn-primary mt-3">Edit Profile</a>
+        <!-- Date of Birth -->
+        <div class="mb-3">
+            <p><strong>Date of Birth:</strong> @Model.DateOfBirth?.ToString("yyyy-MM-dd")</p>
+        </div>
+
+        <!-- Phone Number -->
+        <div class="mb-3">
+            <p><strong>Phone:</strong> @Model.PhoneNumber</p>
+        </div>
+
+        <!-- Gender -->
+        <div class="mb-3">
+            <p><strong>Gender:</strong> @(Model.Gender == true ? "Male" : "Female")</p>
+        </div>
+
+        <!-- Address -->
+        <div class="mb-3">
+            <p><strong>Studio:</strong> @(Model.Studio != null ? Model.Studio.StudioName : "Studio chưa được gán.")</p>
+        </div>
     </div>
+</div>
+
+<!-- Action Button to Edit Profile -->
+<div class="text-center my-4">
+    <a href="@Url.Action("EditProfile", "Employee")" class="btn btn-primary">
+        <i class="bi bi-pencil-square"></i> Edit Profile
+    </a>
 </div>
