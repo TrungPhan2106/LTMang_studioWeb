@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -66,28 +67,37 @@ namespace StudioManagement.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Logic đăng nhập
-                var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
+                // Tìm kiếm người dùng theo email
+                var user = await _context.Users.Include(u => u.Role).FirstOrDefaultAsync(u => u.Email == model.Email);
                 if (user != null)
                 {
+                    // Kiểm tra mật khẩu
                     var passwordHasher = new PasswordHasher<User>();
                     var result = passwordHasher.VerifyHashedPassword(user, user.Password, model.Password);
 
                     if (result == PasswordVerificationResult.Success)
                     {
-                        // Thực hiện đăng nhập
+                        // Tạo danh sách claims
                         var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()),
-                    new Claim(ClaimTypes.Email, user.Email),
-                    new Claim(ClaimTypes.Role, user.Role?.rolename ?? "Member")
-                };
+                        {
+                            new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()),
+                            new Claim(ClaimTypes.Email, user.Email),
+                            new Claim(ClaimTypes.Role, user.Role?.rolename ?? "member") // Gắn role trực tiếp
+                        };
 
-                        var claimsIdentity = new ClaimsIdentity(claims, IdentityConstants.ApplicationScheme);
-                        await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, new ClaimsPrincipal(claimsIdentity));
-
-                        return RedirectToAction("Index", "Home");
+                        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+                        // Phân hướng dựa theo vai trò
+                        if (user.Role != null && user.Role.rolename == "employee")
+                        {
+                            return RedirectToAction("ViewProfile", "Employee"); // Trang của Employee
+                        }
+                        else
+                        {
+                            return RedirectToAction("ViewProfile", "Member"); // Trang của Member
+                        }
                     }
+
                     ModelState.AddModelError(string.Empty, "Mật khẩu không đúng.");
                 }
                 else
@@ -97,10 +107,11 @@ namespace StudioManagement.Controllers
             }
             return View(model);
         }
+
         // Đăng xuất
         public async Task<IActionResult> Logout()
         {
-            await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Login");
         }
 
@@ -125,6 +136,12 @@ namespace StudioManagement.Controllers
                 ModelState.AddModelError(string.Empty, "Email không tồn tại.");
             }
             return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult AccessDenied()
+        {
+            return View("AccessDenied");
         }
 
         // Thiết lập lại mật khẩu

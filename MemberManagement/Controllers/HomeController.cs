@@ -29,7 +29,16 @@ namespace StudioManagement.Controllers
 
         public IActionResult Index()
         {
-            var studios = _context.Studios.ToList();
+            var studios = _context.Studios.Select(s => new Studio
+            {
+                StudioID = s.StudioID,
+                StudioName = s.StudioName,
+                StudioAddress = s.StudioAddress,
+                StudioPhone = s.StudioPhone,
+                StudioPic = string.IsNullOrEmpty(s.StudioPic)
+                    ? "/images/default-studio.png" 
+                    : s.StudioPic
+                }).ToList();
             return View(studios);
         }
 

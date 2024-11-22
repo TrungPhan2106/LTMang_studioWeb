@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StudioManagement.Models;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace StudioManagement.Controllers
 {
+    [Authorize(Policy = "MemberOnly")]
     public class MemberController : Controller
     {
         private readonly MyDbContext _context;
@@ -18,9 +20,9 @@ namespace StudioManagement.Controllers
             _context = context;
             _webHostEnvironment = webHostEnvironment;
         }
-
+       
         // Đăng ký studio
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> RegisterStudio(int studioId)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -41,12 +43,26 @@ namespace StudioManagement.Controllers
         [HttpGet]
         public IActionResult EditProfile()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var member = _context.Members.Include(m => m.User).FirstOrDefault(m => m.UserId.ToString() == userId);
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!int.TryParse(userIdString, out int userId))
+            {
+                return BadRequest("Invalid UserId"); // Trả về lỗi nếu UserId không hợp lệ
+            }
+
+            var member = _context.Members
+                                 .Include(m => m.User)
+                                 .FirstOrDefault(m => m.UserId == userId);
 
             if (member == null)
             {
-                member = new Member { UserId = int.Parse(userId) };
+                // Tạo mới thành viên nếu chưa tồn tại
+                member = new Member
+                {
+                    UserId = userId,
+                    DateOfBirth = DateTime.Now, // Gán giá trị mặc định
+                    JoinedDate = DateTime.Now
+                };
                 _context.Members.Add(member);
                 _context.SaveChanges();
             }
@@ -66,19 +82,32 @@ namespace StudioManagement.Controllers
                     return NotFound();
                 }
 
-                // Cập nhật thông tin thành viên
+                // Handle file upload
+                if (file != null && file.Length > 0)
+                {
+                    // Define the path to save the image
+                    var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "member");
+                    Directory.CreateDirectory(uploadsFolder); // Ensure the directory exists
+
+                    var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                    // Save the file
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await file.CopyToAsync(fileStream);
+                    }
+
+                    // Update the ImageUrl property
+                    existingMember.ImageUrl = Path.Combine("member", uniqueFileName).Replace("\\", "/");
+                }
+
+                // Update other properties
                 existingMember.DateOfBirth = model.DateOfBirth;
                 existingMember.PhoneNumber = model.PhoneNumber;
                 existingMember.Gender = model.Gender;
                 existingMember.Address = model.Address;
                 existingMember.JoinedDate = model.JoinedDate;
-
-                // Xử lý ảnh nếu có
-                if (file != null)
-                {
-                    string memberPath = Path.Combine(_webHostEnvironment.WebRootPath, "images", "member");
-                    existingMember.ImageUrl = await SaveImage(file, memberPath, existingMember.ImageUrl);
-                }
 
                 await _context.SaveChangesAsync();
                 return RedirectToAction("ViewProfile");
@@ -87,50 +116,23 @@ namespace StudioManagement.Controllers
             return View(model);
         }
 
-        // Xem thông tin cá nhân
+
+        [HttpGet]
         public IActionResult ViewProfile()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var member = _context.Members.Include(m => m.User).FirstOrDefault(m => m.UserId.ToString() == userId);
+            var member = _context.Members
+                .Include(m => m.User)
+                .Include(m => m.Studio)
+                .FirstOrDefault(m => m.UserId.ToString() == userId);
 
             if (member == null)
             {
-                return NotFound();
+                TempData["Message"] = "Bạn cần cập nhật thông tin cá nhân.";
+                return RedirectToAction("EditProfile"); // Chuyển hướng đến EditProfile
             }
 
             return View(member);
-        }
-
-        // Hàm phụ để lưu ảnh mới và xóa ảnh cũ nếu có
-        private async Task<string> SaveImage(IFormFile file, string folderPath, string existingImagePath)
-        {
-            // Tạo thư mục nếu chưa tồn tại
-            if (!Directory.Exists(folderPath))
-            {
-                Directory.CreateDirectory(folderPath);
-            }
-
-            // Xóa ảnh cũ nếu có
-            if (!string.IsNullOrEmpty(existingImagePath))
-            {
-                var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, existingImagePath.TrimStart('\\'));
-                if (System.IO.File.Exists(oldImagePath))
-                {
-                    System.IO.File.Delete(oldImagePath);
-                }
-            }
-
-            // Tạo tên file mới và lưu ảnh
-            string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-            string fullPath = Path.Combine(folderPath, fileName);
-
-            using (var fileStream = new FileStream(fullPath, FileMode.Create))
-            {
-                await file.CopyToAsync(fileStream);
-            }
-
-            // Trả về đường dẫn ảnh để lưu vào cơ sở dữ liệu
-            return Path.Combine("images", "member", fileName).Replace("\\", "/");
         }
     }
 }
